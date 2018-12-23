@@ -1,24 +1,26 @@
-<!DOCTYPE <!DOCTYPE html>
+<?php
+session_start();
+if(isset($_GET['reset'])){
+    session_destroy();
+    unset($_SESSION['reset']);
+    header("Location: publish.php");
+}
+?>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>Publish SRM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/framework.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 </head>
 <body>
 
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Logo</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="index.php">Home</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php include "includes/topbar.php"; ?>
 
 
     <div class="center">
@@ -43,31 +45,33 @@
 
             <div class="row">
                 <div class="col l8 s12 m5">
-                    <form action="preview.php" method="GET">
-                        <div class="card-panel teal">
-                            <span class="white-text">
+                    <form action="preview.php" method="POST" enctype="multipart/form-data">
+                        <div class="card-panel yellow lighten-4">
+                            <span class="black-text">
                                 Event Title: <br />
                                 <div class="input-field inline">
-                                    <input name="event_title" id="event_title" type="text" class="validate">
+                                    <input name="event_title" id="event_title" type="text" class="validate" value="<?php if(isset($_SESSION['event_title'])) echo $_SESSION['event_title']; ?>">
                                 </div><br />
                                 Date : <br />
                                 <div class="input-field inline">
-                                    <input name="event_title" id="event_title" type="text" class="validate">
+                                    <input name="event_date" id="event_date" type="text" class="validate value="<?php if(isset($_SESSION['event_date'])) echo $_SESSION['event_date']; ?>"">
                                 </div><br />
                                 Registration Link/Header :<br />
                                 <div class="input-field inline">
-                                    <input name="c_header" id="c_header" type="text" class="validate">
+                                    <input name="c_header" id="c_header" type="text" class="validate" value="<?php if(isset($_SESSION['c_header'])) echo $_SESSION['c_header']; ?>">
                                 </div><br />
                                 Detailed Information :
                                 <div class="row">
-                                    <form class="col s12">
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <textarea name="event_details" id="event_details" class="materialize-textarea"></textarea>
-                                                <label for="event_details">Event Details</label>
+                                    <div class="container">
+                                        <form class="col s12">
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <textarea name="event_details" id="event_details" class="materialize-textarea"><?php if(isset($_SESSION['event_details'])) echo $_SESSION['event_details']; ?></textarea>
+                                                    <label for="event_details">Event Details</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                                 Upload a poster/cover image :
                                 <div class="file-field input-field">
@@ -76,10 +80,18 @@
                                         <input name="poster" type="file">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text">
+                                        <input name="poster_path" class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <input type="submit" value="preview">
+                                <div class="center">
+                                    <div class="container">
+                                        <input type="submit" value="preview">
+                                    </div>
+                                    <br/>
+                                    <form action="publish.php" method="GET">
+                                        <input id="reset" class="deep-orange accent-3" type="submit" name="reset" value="Reset">
+                                    </form>
+                                </div>
                             </span>
                         </div>
                     </form>
@@ -88,6 +100,8 @@
 
         </div>
     </div>
+
+    <?php include "includes/footer.php"; ?>
 
     
     <script src="js/index.js"></script>

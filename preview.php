@@ -1,3 +1,7 @@
+<?php
+    include "includes/config.php";
+    include "includes/header.php";
+?>
 <!DOCTYPE <!DOCTYPE html>
 <html>
 <head>
@@ -5,14 +9,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Publish SRM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/framework.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 </head>
 <?php
-$event_title = $_GET['event_title'];
-$c_header = $_GET['c_header'];
-$event_details = $_GET['event_details'];
+$event_title = $_SESSION['event_title'] = $_POST['event_title'];
+$event_date = $_SESSION['event_date'] = $_POST['event_date'];
+$c_header = $_SESSION['c_header'] = $_POST['c_header'];
+$event_details = $_SESSION['event_details'] = $_POST['event_details'];
+$poster = $_FILES['poster'];
+$poster_dir = "posters/".uniqid().".jpg";
+move_uploaded_file($poster['tmp_name'], $poster_dir);
+$tmp_poster_name = explode('.', $poster['tmp_name'])[0];
 ?>
 <body>
 
@@ -28,23 +38,40 @@ $event_details = $_GET['event_details'];
 
     <div class="center">
         <div class="container" style="text-align: left;">
-            <div class="card medium">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="../images/3.jpg">
+            <form action="scripts/publish_prc.php" method="POST">
+                <div class="card medium">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="<?php echo $poster_dir; ?>">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4">
+                            <?php echo $event_title; ?>
+                            <br />
+                            <?php echo $event_date; ?>
+                            <i class="material-icons right">more_vert</i></span>
+                        <p><a href="#">
+                                <?php echo $c_header; ?></a></p>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">
+                            <?php echo $event_title; ?><i class="material-icons right">close</i></span>
+                        <p>
+                            <?php echo $event_details; ?>
+                        </p>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">
-                        <?php echo $event_title; ?>
-                        <i class="material-icons right">more_vert</i></span>
-                    <p><a href="#"><?php echo $c_header; ?></a></p>
+                
+                <div class="row">
+                    <div class="col s12 m5">
+                        <div class="card-panel yellow lighten-4">
+                            <span class="white-text">
+                                <input id="publish" type="submit" value="publish">
+                                <a href="publish.php" class="btn waves-effect waves-teal light-green darken-1">Go Back</a>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4"><?php echo $event_title; ?><i class="material-icons right">close</i></span>
-                    <p><?php echo $event_details; ?></p>
-                </div>
-            </div>
-
-            
+            </form>
         </div>
     </div>
 
