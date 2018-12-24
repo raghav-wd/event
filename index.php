@@ -14,6 +14,7 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="publish.php">Publish</a></li>
+                <li><a href="myevents.php">My Events</a></li>
             </ul>
         </div>
         <div class="nav-content">
@@ -59,6 +60,7 @@
     
     <ul class="sidenav" id="mobile-demo">
         <li><a href="publish.php">Publish</a></li>
+        <li><a href="myevents.php">My Events</a></li>
     </ul>
     
     <?php 
@@ -92,7 +94,7 @@
                                         <div class='container' style='text-align: left;'>
                                             <div class='card medium'>
                                                 <div class='card-image waves-effect waves-block waves-light'>
-                                                    <img class='activator' src=''>
+                                                    <img class='activator' src='posters/".$row['event_poster']."'>
                                                 </div>
                                                 <div class='card-content'>
                                                     <span class='card-title activator grey-text text-darken-4'>"

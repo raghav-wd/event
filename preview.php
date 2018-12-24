@@ -1,6 +1,12 @@
 <?php
     include "includes/config.php";
     include "includes/header.php";
+    if(isset($_SESSION['uniqid'])){
+    //access granted only to publishers;
+}
+else {
+    header("Location: login.php");
+};
 ?>
 <!DOCTYPE <!DOCTYPE html>
 <html>
@@ -31,31 +37,38 @@ $chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip_text_4'];
 
 if(isset($_FILES['poster'])){
 $poster = $_FILES['poster'];
-$poster_dir = "posters/".uniqid().".jpg";
-move_uploaded_file($poster['tmp_name'], $poster_dir);
-$tmp_poster_name = explode('.', $poster['tmp_name'])[0];
+$poster_ext =  explode('.', $poster['name'])[1];
+$poster_uniqid = uniqid().".".$poster_ext;
+$_SESSION['poster_uniqid'] = $poster_uniqid;
+$poster_dir = "posters/".$poster_uniqid;
+// $image = imagecreatefromjpeg($poster['tmp_name']);
+// imagejpeg($image, $poster_dir, '65');
+compress_image($poster['tmp_name'], $poster_dir, $poster_ext, '70');
+// move_uploaded_file($poster['tmp_name'], $poster_dir);
+// $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
 }
+
+function compress_image($source_url, $destination_url, $extension,  $quality) {
+        if($extension == ' jpeg' || $extension == 'jpg')
+        {
+            $image = imagecreatefromjpeg($source_url);
+            imagejpeg($image, $destination_url, $quality);
+        }
+        else
+        move_uploaded_file($source_url, $destination_url);
+    }
 
 ?>
 <body>
 
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Logo</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="index.php">Home</a></li>
-            </ul>
-        </div>
-    </nav>
-
+    <?php include "includes/topbar.php"; ?>
 
     <div class="center">
         <div class="container" style="text-align: left;">
             <form action="scripts/publish_prc.php" method="POST">
-                <input type='text' name="test1">
                 <div class="card medium">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="<?php echo $poster_dir; ?>">
+                        <img class="activator" src="<?php echo $poster_dir;?>">
                     </div>
                     <div class="card-content">
                         <span class="card-title activator grey-text text-darken-4">
