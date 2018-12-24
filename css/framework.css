@@ -1,7 +1,20 @@
-.card-image{
-    object-fit: cover;
+.container-1{
+    padding: 10px;
 }
-    input[type="submit"], input[type="button"] {
+.container-2{
+    padding: 20px;
+}
+.container-3{
+    padding: 30px;
+}
+.container-4{
+    padding: 40px;
+}
+.container-5{
+    padding: 50px;
+}
+
+input[type="submit"], input[type="button"] {
     background-color: #212121;
     color: whitesmoke;
     border: none;
@@ -28,4 +41,20 @@ input[type="submit"]:hover, input[type="button"]:hover {
 
 nav {
     margin-bottom: 20px;
+}
+
+.login-plate p{
+    padding: 0;margin: 0;
+}
+.login-plate .header{
+    font-size: 18px;
+    font-weight: bold;
+}
+.login-plate .signup-flag{
+    font-size: 10px;
+}
+
+img:last-child {
+    opacity: 0;
+    height: 0px;
 }

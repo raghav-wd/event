@@ -13,7 +13,7 @@
         <div class="container" style="text-align: left;">
             <div class="card-panel">
                 <span class="teal-text text-darken-2 center login-plate">
-                    <p class="header">Sign Up</p>
+                    <p class="header">Log in</p>
                 </span>
             </div>
         </div>
@@ -24,26 +24,17 @@
             <div class="card-panel">
                 <span class="blue-text text-darken-2">
                     <form action="scripts/signup_prc.php" method="POST">
-                        <div class="input-field col s12">
-                            <input name="name" id="name" type="text" class="validate">
-                            <label for="name">Name</label>
-                        </div>
+                        
                         <div class="input-field col s12">
                             <input name="email" id="email" type="email" class="validate">
                             <label for="email">Email</label>
                         </div>
-                        <div class="input-field col s12">
-                            <input name="phno" id="phno" type="number" class="validate">
-                            <label for="phno">Mobile no.</label>
-                        </div>
+                       
                         <div class="input-field col s12">
                             <input name="pwd" id="pwd" type="password" class="validate">
                             <label for="pwd">Password</label>
                         </div>
-                        <div class="input-field col s12">
-                            <input name="cpwd" id="cpwd" type="password" class="validate">
-                            <label for="cpwd">Remember your password?</label>
-                        </div>
+                        
                         <div class="center">
                             <div class="container">
                                 <input name="finished" type="submit" value="Finished?">
@@ -59,14 +50,13 @@
         <div class="container" style="text-align: left;">
             <div class="card-panel">
                 <span class="teal-text text-darken-2 center login-plate">
-                    <p><a class="red-text signup-flag" href="login.php">Already have a publisher account?</a></p>
+                    <p><a class="red-text signup-flag" href="signup.php">Don't have a publisher account?</a></p>
                 </span>
             </div>
         </div>
     </div>
 
     <?php include "includes/footer.php"; ?>
-
     
     <script src="js/index.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>

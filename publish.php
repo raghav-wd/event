@@ -54,7 +54,7 @@ if(isset($_GET['reset'])){
                                 </div><br />
                                 Date : <br />
                                 <div class="input-field inline">
-                                    <input name="event_date" id="event_date" type="text" class="validate value="<?php if(isset($_SESSION['event_date'])) echo $_SESSION['event_date']; ?>"">
+                                    <input name="event_date" id="event_date" type="text" class="validate" value="<?php if(isset($_SESSION['event_date'])) echo $_SESSION['event_date']; ?>">
                                 </div><br />
                                 Registration Link/Header :<br />
                                 <div class="input-field inline">
