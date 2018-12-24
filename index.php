@@ -22,10 +22,17 @@
                 <?php
                 $tot_days = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
                 $today = date('j');
+                $days_in_nxt_mth = 31-($tot_days-$today);
+                $a = 'true';
 
                 for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
                 {
-                    $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+                    if($i > 10){
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+                    }
+                    else {
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0$i%'";
+                    }
                     $res = mysqli_query($conn, $sql);
                     $num_arrays = mysqli_num_rows($res);
 
@@ -39,6 +46,11 @@
                                 echo "<li class='tab'><a href='#test".$i."'>".$i."/".date('m')."/".date('y')."</a></li>";
                             }
                         }
+                        if($i == $tot_days && $a == 'true'){
+                            $i = 01;
+                            $tot_days = $days_in_nxt_mth;
+                            $a = 'false';
+                        }
                 }
                 ?>
             </ul>
@@ -50,16 +62,25 @@
     </ul>
     
     <?php 
+
+        $days_in_nxt_mth = 31-($tot_days-$today);
+        $a = 'true';
+
         for($i = $today-1; $i<= $tot_days; $i++) //prints the event day-wise
         {
-            $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+            if($i > 10){
+                $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+            }
+            else {
+                $sql = "SELECT * FROM posts WHERE event_date LIKE '0$i%'";
+            }
             $res = mysqli_query($conn, $sql);
             $num_arrays = mysqli_num_rows($res);
 
             if($num_arrays != '0')
             {
                 echo "<div id='test".$i."' class='col s12'>";
-                for($j =1; $j<=$num_arrays; $j++)
+                for($j =01; $j<=$num_arrays; $j++)
                 {
                     $row = mysqli_fetch_assoc($res);
                     if($row['event_title'] != "")
@@ -85,6 +106,25 @@
                                                 <div class='card-reveal'>
                                                     <span class='card-title grey-text text-darken-4'>".$row['event_title']."<i class='material-icons right'>close</i></span>
                                                     <p>".$row['event_details']."</p>
+                                                    <p>";
+                                                                    if(isset($row['chip_text_1']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_1'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_2']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_2'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_3']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_3'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_4']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_4'].
+                                                                    "</div>";
+
+                                                echo    "</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -93,7 +133,12 @@
                     }
                 }
                 echo "</div>";
-            }  
+            }
+            if($i == $tot_days && $a == 'true'){
+                            $i = 01;
+                            $tot_days = $days_in_nxt_mth;
+                            $a = 'false';
+                        } 
         }
     
 

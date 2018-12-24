@@ -20,17 +20,17 @@ $event_date = $_SESSION['event_date'] = $_POST['event_date'];
 $c_header = $_SESSION['c_header'] = $_POST['c_header'];
 $event_details = $_SESSION['event_details'] = $_POST['event_details'];
 
-if(isset($_SESSION['chip_text_1']))
-$chip_text_1 = $_SESSION['chip_text_1'] = $_POST['chip-text-1'];
-if(isset($_SESSION['chip_text_2']))
-$chip_text_2 = $_SESSION['chip_text_2'] = $_POST['chip-text-2'];
-if(isset($_SESSION['chip_text_3']))
-$chip_text_3 = $_SESSION['chip_text_3'] = $_POST['chip-text-3'];
-if(isset($_SESSION['chip_text_4']))
-$chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip-text-4'];
+if(isset($_POST['chip_text_1']))
+$chip_text_1 = $_SESSION['chip_text_1'] = $_POST['chip_text_1'];
+if(isset($_POST['chip_text_2']))
+$chip_text_2 = $_SESSION['chip_text_2'] = $_POST['chip_text_2'];
+if(isset($_POST['chip_text_3']))
+$chip_text_3 = $_SESSION['chip_text_3'] = $_POST['chip_text_3'];
+if(isset($_POST['chip_text_4']))
+$chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip_text_4'];
 
 if(isset($_FILES['poster'])){
-    $poster = $_FILES['poster'];
+$poster = $_FILES['poster'];
 $poster_dir = "posters/".uniqid().".jpg";
 move_uploaded_file($poster['tmp_name'], $poster_dir);
 $tmp_poster_name = explode('.', $poster['tmp_name'])[0];

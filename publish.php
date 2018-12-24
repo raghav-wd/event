@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(isset($_SESSION['uniqid'])){
+    //access granted only to publishers;
+}
+else {
+    header("Location: login.php");
+}
 if(isset($_GET['reset'])){
     session_destroy();
     unset($_SESSION['reset']);
@@ -54,7 +60,7 @@ if(isset($_GET['reset'])){
                                 </div><br />
                                 Date : <br />
                                 <div class="input-field inline">
-                                    <input name="event_date" id="event_date" type="text" class="validate" value="<?php if(isset($_SESSION['event_date'])) echo $_SESSION['event_date']; ?>">
+                                    <input name="event_date" id="event_date" type="text" class="validate" placeholder="dd/mm/yy" value="<?php if(isset($_SESSION['event_date'])) echo $_SESSION['event_date']; ?>">
                                 </div><br />
                                 Registration Link/Header :<br />
                                 <div class="input-field inline">
@@ -74,21 +80,21 @@ if(isset($_GET['reset'])){
                                     </div>
                                 </div>
                                 
-                                <input type="text" name="found-tags" onkeyup="etag(this)" id="found-tags" placeholder="Found-tags" />
+                                <input type="text" name="event-tags" onkeyup="etag(this)" id="event-tags" placeholder="event-tags" />
                                 <div class="chips-container">
                                 </div>
 
-                                <script>
+                                <script> // creates chip input max-limit 4
                                     var chip_b = document.querySelector(".chips-container");
                                     var i = 1;
                                     
                                     function etag(tag_v) {
-                                        var ftag = document.querySelector('#found-tags');
+                                        var ftag = document.querySelector('#event-tags');
                                         var text = tag_v.value;
                                         var len = text.length;
                                         if (text.charAt(len - 1) == ' ')//checks if last char entered is space and then makes the text
                                         {
-                                            chip_b.innerHTML += "<div class='chip'><span class='chip-text'><input type='text' name='chip-text-" + i + "' value='" + text + "' style='width: 55px;border:none;padding-left:6px;font-size: 12px;'/></span><i onclick='dec_close()' class='close'>&times;</i></div>";
+                                            chip_b.innerHTML += "<div class='chip'><span class='chip-text'><input type='text' name='chip_text_" + i + "' value='" + text + "' style='width: 55px;border:none;padding-left:6px;font-size: 12px;'/></span><i onclick='dec_close()' class='close'>&times;</i></div>";
                                             tag_v.value = "";
                                             i++;
                                         }

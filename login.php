@@ -14,6 +14,7 @@
             <div class="card-panel">
                 <span class="teal-text text-darken-2 center login-plate">
                     <p class="header">Log in</p>
+                    <p><a class="red-text signup-flag" href="signup.php"><?php if(isset($_SESSION['message'])){echo $_SESSION['message']; unset($_SESSION['message']); } ?></a></p>
                 </span>
             </div>
         </div>
@@ -23,8 +24,7 @@
         <div class="container" style="text-align: left;">
             <div class="card-panel">
                 <span class="blue-text text-darken-2">
-                    <form action="scripts/signup_prc.php" method="POST">
-                        
+                    <form action="scripts/login_prc.php" method="POST">
                         <div class="input-field col s12">
                             <input name="email" id="email" type="email" class="validate">
                             <label for="email">Email</label>
