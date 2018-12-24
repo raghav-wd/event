@@ -1,25 +1,26 @@
 <?php
-session_start();
 include "../includes/config.php";
+session_start();
 
 $event_title = $_SESSION['event_title'];
 $event_date = $_SESSION['event_date'];
 $event_url = $_SESSION['c_header'];
 $event_details = $_SESSION['event_details'];
+$chip_text_1 = $_SESSION['chip_text_1'];
 // $poster_dir = $_SESSION['poster_dir'];
 
 
-$sql = "INSERT INTO posts(`event_title`, `event_date`, `event_url`, `event_details`) VALUES('$event_title', '$event_date', '$event_url', '$event_details')";
+$sql = "insert into posts(`event_title` ,`event_date` ,`event_url` ,`event_details` , `chip_text_1`) value('$event_title', '$event_date','$event_url', '$event_details', '$chip_text_1')";
 $res = mysqli_query($conn, $sql);
+
+
 
 if($res){
     header('Location: ../index.php');
 }
 else {
-    echo "NOPE";
+    echo "Oops, We ran into some trouble";
 }
-
-
 
 
 

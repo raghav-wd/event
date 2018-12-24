@@ -39,24 +39,10 @@
 
 
 
-
-    <div id='test24' class='col s12'>
-        Hellol
-    </div>
-    <div id='test26' class='col s12'>
-        Hello
-    </div>
-    <div id="search" class="col s12">Search Here</div>
-    </div>
-
-
-
-
-
-
-
-
-
+    <input type="text" name="found-tags" onkeyup="etag(this)" id="found-tags" placeholder="Found-tags" />
+                                    <div class="chips-container">
+                                        
+                                    </div>
 
 
 
@@ -96,15 +82,26 @@
     <script>
 
 
-        $(document).ready(function () {
-            $('.tabs').tabs();
-            $('.sidenav').sidenav();
-        });
+                var chip_b = document.querySelector(".chips-container");
+                var i = 1;
+            function etag(tag_v){
+                var ftag = document.querySelector('#found-tags');
+                    var text = tag_v.value;
+                    var len = text.length;
+                    if (text.charAt(len - 1) == ' ')//checks if last char entered is space and then makes the text
+                    {
+                    chip_b.innerHTML += "<div class='chip'><span class='chip-text'><input type='text' name='chip-text-" + i + "' value='" + text + "' style='width: 55px;border:none;padding-left:6px;font-size: 14px;'/></span><i onclick='dec_close()' class='close'>&times;</i></div>";
+                tag_v.value = "";
+                i++;
+            }
+        }
+                function dec_close(){
+                    i--;
+                }
 
         document.querySelector('#small').addEventListener("click", function () {
             document.getElementsByClassName("ps-card-container").classList.add("change");
         });
-
 
     </script>
 </body>

@@ -1,4 +1,13 @@
 <?php
+
+include "includes/config.php";
+
+$search = $_GET['search'];
+
+
+// chip_text_1, chip_text_2, chip_text_3, chip_text_4
+?>
+<?php
     include "includes/config.php";
     include "includes/header.php";
 ?>
@@ -115,7 +124,48 @@
                 </div>
             </div>
         </div>
-    </div></div>
+
+        <?php
+            
+            $sql = "SELECT * FROM posts WHERE event_title LIKE '$search%' OR chip_text_1 LIKE '$search%' OR chip_text_2 LIKE '$search%' OR chip_text_3 LIKE '$search%' OR chip_text_4 LIKE '$search%'";
+            $res = mysqli_query($conn, $sql);
+            $num_rows = mysqli_num_rows($res);
+
+            if($num_rows != 0)
+                        for($i = 1; $i<=$num_rows; $i++)
+                        {
+                            $row = mysqli_fetch_assoc($res);
+
+                            echo "<div class='center'>
+                                        <div class='container' style='text-align: left;'>
+                                            <div class='card medium'>
+                                                <div class='card-image waves-effect waves-block waves-light'>
+                                                    <img class='activator' src=''>
+                                                </div>
+                                                <div class='card-content'>
+                                                    <span class='card-title activator grey-text text-darken-4'>"
+                                                        .$row['event_title']."
+                                                        <br/>"
+                                                        .$row['event_date']."
+                                                        <i class='material-icons right'>more_vert</i>
+                                                    </span>
+                                                    <p><a href='".$row['event_url']."'>".$row['event_url']."</a></p>
+                                                </div>
+                                                <div class='card-reveal'>
+                                                    <span class='card-title grey-text text-darken-4'>".$row['event_title']."<i class='material-icons right'>close</i></span>
+                                                    <p>".$row['event_details']."</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>";
+                        
+                        }
+
+             
+
+        ?>
+
+    </div>
     
     <?php include "includes/footer.php"; ?>
 

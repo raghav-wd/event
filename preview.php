@@ -19,10 +19,23 @@ $event_title = $_SESSION['event_title'] = $_POST['event_title'];
 $event_date = $_SESSION['event_date'] = $_POST['event_date'];
 $c_header = $_SESSION['c_header'] = $_POST['c_header'];
 $event_details = $_SESSION['event_details'] = $_POST['event_details'];
-$poster = $_FILES['poster'];
+
+if(isset($_SESSION['chip_text_1']))
+$chip_text_1 = $_SESSION['chip_text_1'] = $_POST['chip-text-1'];
+if(isset($_SESSION['chip_text_2']))
+$chip_text_2 = $_SESSION['chip_text_2'] = $_POST['chip-text-2'];
+if(isset($_SESSION['chip_text_3']))
+$chip_text_3 = $_SESSION['chip_text_3'] = $_POST['chip-text-3'];
+if(isset($_SESSION['chip_text_4']))
+$chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip-text-4'];
+
+if(isset($_FILES['poster'])){
+    $poster = $_FILES['poster'];
 $poster_dir = "posters/".uniqid().".jpg";
 move_uploaded_file($poster['tmp_name'], $poster_dir);
 $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
+}
+
 ?>
 <body>
 
@@ -39,6 +52,7 @@ $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
     <div class="center">
         <div class="container" style="text-align: left;">
             <form action="scripts/publish_prc.php" method="POST">
+                <input type='text' name="test1">
                 <div class="card medium">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img class="activator" src="<?php echo $poster_dir; ?>">
@@ -57,6 +71,25 @@ $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
                             <?php echo $event_title; ?><i class="material-icons right">close</i></span>
                         <p>
                             <?php echo $event_details; ?>
+                        </p>
+                        <p>
+                            <?php   if(isset($chip_text_1))
+                                    echo "<div class='chip'>&deg;"
+                                            .$chip_text_1.
+                                        "</div>";
+                                        if(isset($chip_text_2))
+                                    echo "<div class='chip'>&deg;"
+                                            .$chip_text_2.
+                                        "</div>";
+                                        if(isset($chip_text_3))
+                                    echo "<div class='chip'>&deg;"
+                                            .$chip_text_3.
+                                        "</div>";
+                                        if(isset($chip_text_4))
+                                    echo "<div class='chip'>&deg;"
+                                            .$chip_text_4.
+                                        "</div>";
+                            ?>
                         </p>
                     </div>
                 </div>

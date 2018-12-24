@@ -73,6 +73,31 @@ if(isset($_GET['reset'])){
                                         </form>
                                     </div>
                                 </div>
+                                
+                                <input type="text" name="found-tags" onkeyup="etag(this)" id="found-tags" placeholder="Found-tags" />
+                                <div class="chips-container">
+                                </div>
+
+                                <script>
+                                    var chip_b = document.querySelector(".chips-container");
+                                    var i = 1;
+                                    
+                                    function etag(tag_v) {
+                                        var ftag = document.querySelector('#found-tags');
+                                        var text = tag_v.value;
+                                        var len = text.length;
+                                        if (text.charAt(len - 1) == ' ')//checks if last char entered is space and then makes the text
+                                        {
+                                            chip_b.innerHTML += "<div class='chip'><span class='chip-text'><input type='text' name='chip-text-" + i + "' value='" + text + "' style='width: 55px;border:none;padding-left:6px;font-size: 12px;'/></span><i onclick='dec_close()' class='close'>&times;</i></div>";
+                                            tag_v.value = "";
+                                            i++;
+                                        }
+                                    }
+                                    function dec_close() {
+                                        i--;
+                                    }
+                                </script>
+                                    
                                 Upload a poster/cover image :
                                 <div class="file-field input-field">
                                     <div class="btn">
@@ -113,7 +138,44 @@ if(isset($_GET['reset'])){
 
         $(document).ready(function () {
             $('.tabs').tabs();
+
             $('.sidenav').sidenav();
+
+            $('input.autocomplete').autocomplete({
+                data: {
+                    //CS Fields
+                    "Machine Learning": null,
+                    "Artificial Intelligence": null,
+                    "Web Development": null,
+                    "Web Dev": null,
+                    "Automotive": null,
+                    //Coding Languages
+                    "Block Chain": null,
+                    "Python": null,
+                    "Ruby": null,
+                    "Android": null,
+                    "C": null,
+                    "C++": null,
+                    "C#": null,
+                    "Django": null,
+                    "Java": null,
+                    "Larvel": null,
+                    "MongoDB": null,
+                    "Ruby": null,
+                    "Swift": null,
+                    "": null,
+                    //Softwares
+                    "Android Studio": null,
+                    "Autocad": null,
+                    "Blender": null,
+                    "Maya": null,
+                    "Illustrator": null,
+                    "Photoshop": null,
+                    "Premier Pro": null,
+                    "After Effects": null,
+
+                },
+            });
         });
 
         document.querySelector('#small').addEventListener("click", function () {
