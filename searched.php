@@ -2,7 +2,9 @@
 
 include "includes/config.php";
 
-$search = $_GET['search'];
+if(isset($_GET['search'])){
+    $search = $_GET['search'];
+}
 
 
 // chip_text_1, chip_text_2, chip_text_3, chip_text_4
@@ -19,22 +21,38 @@ $search = $_GET['search'];
     <!--Extended Navbar with tabs-->
     <nav class="nav-extended">
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Logo</a>
+            <a href="#" class="brand-logo fantasy">Wen</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="myevent.php">My Events</a></li>
                 <li><a href="publish.php">Publish</a></li>
             </ul>
         </div>
         <div class="nav-content">
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a href='#search'>Search</a></li>
+                <li class="tab"><a class="active" href='#search'>Search</a></li>
                 <?php
                 $tot_days = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
                 $today = date('j');
+                $mth = date('m');
+                $year = date('y');
+                // $days_in_nxt_mth = 31-($tot_days-$today);
+                $a = 'true';
 
-                for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
-                {
-                    $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+                    for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
+                    {
+                    if($i >= 10){
+                        if($mth < 10)
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_0".$mth."%'";
+                        else 
+                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%'";
+                    }
+                    else {
+                        if($mth < 10)
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_0".$mth."%'";
+                        else
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%'";
+                    }
                     $res = mysqli_query($conn, $sql);
                     $num_arrays = mysqli_num_rows($res);
 
@@ -42,11 +60,19 @@ $search = $_GET['search'];
                     {
                         
                             if($i == $today){
-                                echo "<li class='tab'><a class='active' href='#test".$i."'>".$i."/".date('m')."/".date('y')."</a></li>";
+                            echo "<li class='tab'><a class='active' href='#test".$i."-".$mth."'>".$i."/".$mth."/".$year."</a></li>";
                             }
                             else {
-                                echo "<li class='tab'><a href='#test".$i."'>".$i."/".date('m')."/".date('y')."</a></li>";
+                                echo "<li class='tab'><a href='#test".$i."-".$mth."'>".$i."/".$mth."/".$year."</a></li>";
                             }
+                        }
+
+                        if($i == $tot_days && $a == 'true'){
+                            $i = 1;
+                            $tot_days = $today;
+                            if($mth == '12'){$mth = '1'; $year = $year+1;}
+                            else $mth = $mth+1;
+                            $a = 'false';
                         }
                 }
                 ?>
@@ -56,19 +82,42 @@ $search = $_GET['search'];
     
     <ul class="sidenav" id="mobile-demo">
         <li><a href="publish.php">Publish</a></li>
+        <div class="divider"></div>
+        <li><a href="myevents.php">My Events</a></li>
+        <div class="divider"></div>
+        <li><a href="signup.php">Sign up</a></li>
+        <li><a href="login.php">Log in</a></li>
     </ul>
     
     <?php 
-        for($i = $today-1; $i<= $tot_days; $i++) //prints the event day-wise
-        {
-            $sql = "SELECT * FROM posts WHERE event_date LIKE '$i%'";
+
+        // $days_in_nxt_mth = 31-($tot_days-$today);
+        $tot_days = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+        $today = date('j');
+        $mth = date('m');
+        $a = 'true';
+
+        for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
+                    {
+                    if($i >= 10){
+                        if($mth < 10)
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_0".$mth."%'";
+                        else 
+                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%'";
+                    }
+                    else {
+                        if($mth < 10)
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_0".$mth."%'";
+                        else
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%'";
+                    }
             $res = mysqli_query($conn, $sql);
             $num_arrays = mysqli_num_rows($res);
 
             if($num_arrays != '0')
             {
-                echo "<div id='test".$i."' class='col s12'>";
-                for($j =1; $j<=$num_arrays; $j++)
+                echo "<div id='test".$i."-".$mth."' class='col s12'>";
+                for($j = 1; $j<=$num_arrays; $j++)
                 {
                     $row = mysqli_fetch_assoc($res);
                     if($row['event_title'] != "")
@@ -80,7 +129,7 @@ $search = $_GET['search'];
                                         <div class='container' style='text-align: left;'>
                                             <div class='card medium'>
                                                 <div class='card-image waves-effect waves-block waves-light'>
-                                                    <img class='activator' src=''>
+                                                    <img class='activator' src='posters/".$row['event_poster']."'>
                                                 </div>
                                                 <div class='card-content'>
                                                     <span class='card-title activator grey-text text-darken-4'>"
@@ -94,6 +143,25 @@ $search = $_GET['search'];
                                                 <div class='card-reveal'>
                                                     <span class='card-title grey-text text-darken-4'>".$row['event_title']."<i class='material-icons right'>close</i></span>
                                                     <p>".$row['event_details']."</p>
+                                                    <p>";
+                                                                    if(isset($row['chip_text_1']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_1'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_2']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_2'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_3']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_3'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_4']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_4'].
+                                                                    "</div>";
+
+                                                echo    "</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,7 +170,14 @@ $search = $_GET['search'];
                     }
                 }
                 echo "</div>";
-            }  
+            }
+            if($i == $tot_days && $a == 'true'){
+                            $i = 1;
+                            $tot_days = $today;
+                            if($mth == '12')$mth = '1';
+                            else $mth = $mth+1;
+                            $a = 'false';
+                        }
         }
     
 
@@ -115,8 +190,8 @@ $search = $_GET['search'];
             <div class="col s12">
                 <div class="row">
                     <form action="searched.php" method="GET">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">textsms</i>
+                        <div class="input-field col s11 l11">
+                            <i class="material-icons prefix">search</i>
                             <input name="search" type="text" id="autocomplete-input" class="autocomplete">
                             <label for="autocomplete-input">Autocomplete</label>
                         </div>
@@ -127,7 +202,9 @@ $search = $_GET['search'];
 
         <?php
             
-            $sql = "SELECT * FROM posts WHERE event_title LIKE '$search%' OR chip_text_1 LIKE '$search%' OR chip_text_2 LIKE '$search%' OR chip_text_3 LIKE '$search%' OR chip_text_4 LIKE '$search%'";
+            if(isset($search) && $search != '')
+            {
+                $sql = "SELECT * FROM posts WHERE event_title LIKE '$search%' OR chip_text_1 LIKE '$search%' OR chip_text_2 LIKE '$search%' OR chip_text_3 LIKE '$search%' OR chip_text_4 LIKE '$search%'";
             $res = mysqli_query($conn, $sql);
             $num_rows = mysqli_num_rows($res);
 
@@ -140,7 +217,7 @@ $search = $_GET['search'];
                                         <div class='container' style='text-align: left;'>
                                             <div class='card medium'>
                                                 <div class='card-image waves-effect waves-block waves-light'>
-                                                    <img class='activator' src=''>
+                                                    <img class='activator' src='posters/".$row['event_poster']."'>
                                                 </div>
                                                 <div class='card-content'>
                                                     <span class='card-title activator grey-text text-darken-4'>"
@@ -154,6 +231,25 @@ $search = $_GET['search'];
                                                 <div class='card-reveal'>
                                                     <span class='card-title grey-text text-darken-4'>".$row['event_title']."<i class='material-icons right'>close</i></span>
                                                     <p>".$row['event_details']."</p>
+                                                    <p>";
+                                                                    if(isset($row['chip_text_1']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_1'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_2']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_2'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_3']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_3'].
+                                                                    "</div>";
+                                                                    if(isset($row['chip_text_4']))
+                                                                echo "<div class='chip'>&deg;"
+                                                                        .$row['chip_text_4'].
+                                                                    "</div>
+
+                                                </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,6 +259,7 @@ $search = $_GET['search'];
 
              
 
+            }
         ?>
 
     </div>

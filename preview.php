@@ -38,12 +38,13 @@ $chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip_text_4'];
 if(isset($_FILES['poster'])){
 $poster = $_FILES['poster'];
 $poster_ext =  explode('.', $poster['name'])[1];
+echo $poster_ext;
 $poster_uniqid = uniqid().".".$poster_ext;
 $_SESSION['poster_uniqid'] = $poster_uniqid;
 $poster_dir = "posters/".$poster_uniqid;
 // $image = imagecreatefromjpeg($poster['tmp_name']);
 // imagejpeg($image, $poster_dir, '65');
-compress_image($poster['tmp_name'], $poster_dir, $poster_ext, '70');
+compress_image($poster['tmp_name'], $poster_dir, $poster_ext, '60');
 // move_uploaded_file($poster['tmp_name'], $poster_dir);
 // $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
 }

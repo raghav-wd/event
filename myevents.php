@@ -1,19 +1,23 @@
 <?php
-include "includes/config.php";
-include "includes/header.php";
-
+session_start();
 if(isset($_SESSION['uniqid'])){
     //access granted only to publishers;
 }
 else {
     header("Location: login.php");
 }
+include "includes/config.php";
+include "includes/header.php";
+
+
 ?>
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 </head>
 <body>
 
     <?php include "includes/topbar.php"; ?>
+    
+    <?php include "includes/mobile_sidenav.php"; ?>
 
     <?php
     $u_uniqid = $_SESSION['uniqid'];
