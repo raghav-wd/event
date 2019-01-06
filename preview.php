@@ -22,7 +22,6 @@ else {
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 </head>
 <?php
-echo $_POST['nposter'];
 $event_title = $_SESSION['event_title'] = $_POST['event_title'];
 $event_date = $_SESSION['event_date'] = $_POST['event_date'];
 $c_header = $_SESSION['c_header'] = $_POST['c_header'];
@@ -37,7 +36,7 @@ $chip_text_3 = $_SESSION['chip_text_3'] = $_POST['chip_text_3'];
 if(isset($_POST['chip_text_4']))
 $chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip_text_4'];
 
-if(isset($_FILES['poster'])){
+if(($_FILES['poster']['type']) > 1){
 $poster = $_FILES['poster'];
 $poster_ext =  explode('.', $poster['name'])[1];
 $poster_uniqid = uniqid().".".$poster_ext;
@@ -47,7 +46,6 @@ $poster_dir = "posters/".$poster_uniqid;
 // imagejpeg($image, $poster_dir, '65');
 compress_image($poster['tmp_name'], $poster_dir, $poster_ext, '60');
 // move_uploaded_file($poster['tmp_name'], $poster_dir);
-// $tmp_poster_name = explode('.', $poster['tmp_name'])[0];
 }
 
 function compress_image($source_url, $destination_url, $extension,  $quality) {
