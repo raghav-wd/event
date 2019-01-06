@@ -1,5 +1,6 @@
 <?php
 include "../includes/config.php";
+session_start();
 
 $name = $_POST['name'];
 $email = $_POST['email'];
@@ -8,14 +9,35 @@ $pwd = $_POST['pwd'];
 $cpwd = $_POST['cpwd'];
 $uniqid = "e".uniqid('', true);
 
-$sql = "INSERT INTO users(`name`, `email`, `mobile`, `password`, `uniqid`) VALUES('$name', '$email', '$phno', '$pwd', '$uniqid')";
-$res = mysqli_query($conn, $sql);
+if($pwd != $cpwd)$_SESSION['error'] = "Password Mismatched!";
+if(strlen($pwd) < 8)$_SESSION['error'] = "Password should atleast contain 8 characters.";
+if(strlen($phno) < 10)$_SESSION['error'] = "Invalid mobile no.!";
 
-if($res) {
-    header("Location: ../publish.php");
-}
-else {
+$name = mysqli_real_escape_string($conn, $name);
+$email = mysqli_real_escape_string($conn, $email);
+$phno = mysqli_real_escape_string($conn, $phno);
+$pwd = mysqli_real_escape_string($conn, $pwd);
+
+$name = htmlentities($name);
+$email = htmlentities($email);
+$phno = htmlentities($phno);
+$pwd = htmlentities($pwd);
+
+$pwd = password_hash($pwd, PASSWORD_BCRYPT);
+
+
+if(isset($_SESSION['error']))
+{
     header("Location: ../signup.php");
+}
+else
+{
+    $sql = "INSERT INTO users(`name`, `email`, `mobile`, `password`, `uniqid`) VALUES('$name', '$email', '$phno', '$pwd', '$uniqid')";
+    $res = mysqli_query($conn, $sql);
+
+    if($res) {
+        header("Location: ../publish.php");
+    }
 }
 
 

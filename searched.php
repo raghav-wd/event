@@ -7,7 +7,6 @@ if(isset($_GET['search'])){
 }
 
 
-// chip_text_1, chip_text_2, chip_text_3, chip_text_4
 ?>
 <?php
     include "includes/config.php";
@@ -19,16 +18,17 @@ if(isset($_GET['search'])){
 <body>
 
     <!--Extended Navbar with tabs-->
-    <nav class="nav-extended">
+    <nav class="nav-extended amber darken-4">
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo fantasy">Wen</a>
+            <a href="index.php" class="brand-logo fantasy">Wen</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="myevent.php">My Events</a></li>
                 <li><a href="publish.php">Publish</a></li>
             </ul>
         </div>
-        <div class="nav-content">
+
+        <div class="nav-content amber darken-4">
             <ul class="tabs tabs-transparent">
                 <li class="tab"><a class="active" href='#search'>Search</a></li>
                 <?php
@@ -36,22 +36,15 @@ if(isset($_GET['search'])){
                 $today = date('j');
                 $mth = date('m');
                 $year = date('y');
-                // $days_in_nxt_mth = 31-($tot_days-$today);
-                $a = 'true';
+               $num_mth = 0;
 
                     for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
                     {
                     if($i >= 10){
-                        if($mth < 10)
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_0".$mth."%'";
-                        else 
-                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%'";
+                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%"."$year"."'";
                     }
                     else {
-                        if($mth < 10)
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_0".$mth."%'";
-                        else
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%'";
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%"."$year"."'";
                     }
                     $res = mysqli_query($conn, $sql);
                     $num_arrays = mysqli_num_rows($res);
@@ -67,12 +60,16 @@ if(isset($_GET['search'])){
                             }
                         }
 
-                        if($i == $tot_days && $a == 'true'){
-                            $i = 1;
-                            $tot_days = $today;
+                        if($i == $tot_days && $num_mth < 2){
+                            $i = 0;  //parent for loop increments i to 1 so here i = 0
                             if($mth == '12'){$mth = '1'; $year = $year+1;}
-                            else $mth = $mth+1;
-                            $a = 'false';
+                            else
+                            {
+                                $mth = $mth<10?"0".++$mth:++$mth;
+                            }
+                            // $a = 'false';
+                            ++$num_mth;
+                            $tot_days = cal_days_in_month(CAL_GREGORIAN, $mth, $year);
                         }
                 }
                 ?>
@@ -95,21 +92,15 @@ if(isset($_GET['search'])){
         $tot_days = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
         $today = date('j');
         $mth = date('m');
-        $a = 'true';
+        $num_mth = 0;
 
         for($i = $today-1; $i<= $tot_days; $i++) //creates a callender
                     {
                     if($i >= 10){
-                        if($mth < 10)
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_0".$mth."%'";
-                        else 
-                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%'";
+                         $sql = "SELECT * FROM posts WHERE event_date LIKE '$i"."_".$mth."%"."$year"."'";
                     }
                     else {
-                        if($mth < 10)
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_0".$mth."%'";
-                        else
-                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%'";
+                        $sql = "SELECT * FROM posts WHERE event_date LIKE '0".$i."_".$mth."%"."$year"."'";
                     }
             $res = mysqli_query($conn, $sql);
             $num_arrays = mysqli_num_rows($res);
@@ -171,12 +162,16 @@ if(isset($_GET['search'])){
                 }
                 echo "</div>";
             }
-            if($i == $tot_days && $a == 'true'){
-                            $i = 1;
-                            $tot_days = $today;
-                            if($mth == '12')$mth = '1';
-                            else $mth = $mth+1;
-                            $a = 'false';
+            if($i == $tot_days && $num_mth < 2){
+                            $i = 0;  //parent for loop increments i to 1 so here i = 0
+                            if($mth == '12'){$mth = '1'; $year = $year+1;}
+                            else
+                            {
+                                $mth = $mth<10?"0".++$mth:++$mth;
+                            }
+                            // $a = 'false';
+                            ++$num_mth;
+                            $tot_days = cal_days_in_month(CAL_GREGORIAN, $mth, $year);
                         }
         }
     
@@ -186,19 +181,14 @@ if(isset($_GET['search'])){
     ?>
 
     <div id="search" class="col s12">
-        <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <form action="searched.php" method="GET">
-                        <div class="input-field col s11 l11">
-                            <i class="material-icons prefix">search</i>
-                            <input name="search" type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Autocomplete</label>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <form action="searched.php" method="GET">
+            <div class="input-field col s11 l11">
+                <i class="material-icons prefix">search</i>
+                <input name="search" type="text" id="autocomplete-input" class="autocomplete">
+                <label for="autocomplete-input">Autocomplete</label>
+            </div>             
+        </form><br/>
+    </div>
 
         <?php
             

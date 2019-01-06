@@ -9,20 +9,16 @@
 
     <?php include "includes/home_header.php"?>
 
-    <div id="search" class="col s12">
-        <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <form action="searched.php" method="GET">
-                        <div class="input-field col s11 l11">
-                            <i class="material-icons prefix">search</i>
-                            <input name="search" type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Autocomplete</label>
-                        </div>
-                    </form>
+    <div id="search" style="padding: 10px 0 150px 0">
+        <form action="searched.php" method="GET">
+            <div class="container">
+                <div class="input-field">
+                    <i class="material-icons prefix">search</i>
+                    <input name="search" type="text" id="autocomplete-input" class="autocomplete">
+                    <label for="autocomplete-input">Search Here</label>
                 </div>
             </div>
-        </div>
+        </form><br />
     </div>
     
     <?php include "includes/footer.php"; ?>

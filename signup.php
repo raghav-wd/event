@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include "includes/config.php";
     include "includes/header.php";
 ?>
@@ -23,6 +24,7 @@
             <div class="card-panel">
                 <span class="teal-text text-darken-2 center login-plate">
                     <p class="header">Sign Up</p>
+                    <span class="wen-error"><?php if(isset($_SESSION['error'])){echo $_SESSION['error']; unset($_SESSION['error']);}?></span>
                 </span>
             </div>
         </div>

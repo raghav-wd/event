@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include "includes/config.php";
     include "includes/header.php";
     if(isset($_SESSION['uniqid'])){
@@ -21,6 +22,7 @@ else {
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 </head>
 <?php
+echo $_POST['nposter'];
 $event_title = $_SESSION['event_title'] = $_POST['event_title'];
 $event_date = $_SESSION['event_date'] = $_POST['event_date'];
 $c_header = $_SESSION['c_header'] = $_POST['c_header'];
@@ -38,7 +40,6 @@ $chip_text_4 = $_SESSION['chip_text_4'] = $_POST['chip_text_4'];
 if(isset($_FILES['poster'])){
 $poster = $_FILES['poster'];
 $poster_ext =  explode('.', $poster['name'])[1];
-echo $poster_ext;
 $poster_uniqid = uniqid().".".$poster_ext;
 $_SESSION['poster_uniqid'] = $poster_uniqid;
 $poster_dir = "posters/".$poster_uniqid;
